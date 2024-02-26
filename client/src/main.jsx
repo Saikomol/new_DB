@@ -8,7 +8,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const response = await axios.get('/api/notes')
+      const response = await axios.get('/api/note')
       setNotes(response.data)
       setIsLoading(false)
     }
