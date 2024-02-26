@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import axios from 'axios'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
+  const [note, setNotes] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -21,9 +21,9 @@ const App = () => {
 
   return (
     <main>
-      <h1>Acme Notes ({notes.length})</h1>
+      <h1>Acme Notes ({note.length})</h1>
       <ul>
-        {notes.map((note) => {
+        {note.map((note) => {
           return (
             <li key={note.id}>
               {note.txt}
