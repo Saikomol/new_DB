@@ -5,9 +5,11 @@ const pg = require("pg"); // import postgres
 const client = new pg.Client(process.env.DATABESE_URL || 'postgres://localhost/acme_notes_db')
 const express = require('express');
 const app = express();
+const path = require("path");//final create absolute path
 
+app.use('/assets', express.static(path.join(__dirname,'../client/dist/assets')));
 // static routes here (you only need these for deployment)
-
+app.get('/',(req,res) => res.sendFile(path.join(__dirname,'../client/dist/index.html')));
 // app routes here
 app.get('/api/note',async(req,res,next)=>{
   try{
@@ -15,8 +17,8 @@ app.get('/api/note',async(req,res,next)=>{
     SELECT *
     FROM note
     `;
-      const respone = await client.query(SQL);
-      res.send(respone.rows)
+      const response = await client.query(SQL);
+      res.send(response.rows);
   }catch(ex){
       
       next(ex);
@@ -42,7 +44,7 @@ const init = async()=>{
     INSERT INTO note(txt, starred) VALUES('write SQL queries', true);
     INSERT INTO note(txt, starred) VALUES('create routes', false);
     `;
-    await client.query(SQL)
+
     console.log("if note TABLE is exists" );
     console.log("TABLE created name note" );
     console.log("id created !no q" );
