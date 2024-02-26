@@ -5,17 +5,17 @@ const pg = require("pg"); // import postgres
 const client = new pg.Client(process.env.DATABESE_URL || 'postgres://localhost/acme_notes_db')
 const express = require('express');
 const app = express();
-const path = require("path");//final create absolute path
+const path = require('path');//final create absolute path
 
 app.use('/assets', express.static(path.join(__dirname,'../client/dist/assets')));
 // static routes here (you only need these for deployment)
 app.get('/',(req,res) => res.sendFile(path.join(__dirname,'../client/dist/index.html')));
 // app routes here
-app.get('/api/note',async(req,res,next)=>{
+app.get('/api/notes',async(req,res,next)=>{
   try{
     const SQL =`
     SELECT *
-    FROM note
+    FROM notes
     `;
       const response = await client.query(SQL);
       res.send(response.rows);
@@ -34,15 +34,15 @@ const init = async()=>{
     console.log("connected to DATABASE" );
     
     let SQL =`
-    DROP TABLE IF EXISTS note;
-    CREATE TABLE note(
+    DROP TABLE IF EXISTS notes;
+    CREATE TABLE notes(
     id SERIAL PRIMARY KEY,
     txt VARCHAR(255),
     starred BOOLEAN DEFAULT FALSE
     );
-    INSERT INTO note(txt) VALUES('learn express');
-    INSERT INTO note(txt, starred) VALUES('write SQL queries', true);
-    INSERT INTO note(txt, starred) VALUES('create routes', false);
+    INSERT INTO notes(txt) VALUES('learn express');
+    INSERT INTO notes(txt, starred) VALUES('write SQL queries', true);
+    INSERT INTO notes(txt, starred) VALUES('create routes', false);
     `;
 
     console.log("if note TABLE is exists" );
@@ -61,7 +61,7 @@ const init = async()=>{
     app.listen(port, ()=>{
         console.log(`listening on port ${port}`)
         console.log("app. needed express to comunicated")
-        console.log(`curl localhost:${port}/api/note`)
+        console.log(`curl localhost:${port}/api/notes`)
         console.log(`curl for checking status of port`)
     });
 }

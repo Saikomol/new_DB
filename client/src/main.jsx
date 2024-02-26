@@ -3,12 +3,12 @@ import { createRoot } from 'react-dom/client'
 import axios from 'axios'
 
 const App = () => {
-  const [note, setNotes] = useState([])
+  const [notes, setNotes] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const response = await axios.get('/api/note')
+      const response = await axios.get('/api/notes')
       setNotes(response.data)
       setIsLoading(false)
     }
@@ -21,9 +21,9 @@ const App = () => {
 
   return (
     <main>
-      <h1>Acme Notes ({note.length})</h1>
+      <h1>Acme Notes ({notes.length})</h1>
       <ul>
-        {note.map((note) => {
+        {notes.map((note) => {
           return (
             <li key={note.id}>
               {note.txt}
